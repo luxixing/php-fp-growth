@@ -1,23 +1,19 @@
 {
-  "name": "luxixing/php-fp-growth",
-  "type": "library",
-  "description": "PHP FPGrowth",
-  "keywords": [
-    "FPgrowth",
-    "频繁项集挖掘算法"
-  ],
-  "authors": [
-    {
-      "name": "luxixing",
-      "email": "xixing.lu@outlook.com"
+    "name": "luxixing/php-fp-growth",
+    "description": "php fp growth",
+    "type": "vcs",
+    "authors": [
+        {
+            "name": "xixing lu",
+            "email": "xixing.lu@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "FPGrowth": "src/"
+        }
     }
-  ],
-  "require": {
-    "php": ">=5.4.0"
-  },
-  "autoload": {
-    "psr-0": {
-      "FPGrowth\\": "src/"
-    }
-  }
 }
