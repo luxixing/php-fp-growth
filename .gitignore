@@ -1,0 +1,11 @@
+.cake_task_cache
+.idea
+.svn
+.tags
+.tags_sorted_by_file
+.tm_properties
+.project
+.buildpath
+.settings
+*.bak
+/vendor/
