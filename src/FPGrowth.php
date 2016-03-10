@@ -1,7 +1,7 @@
 <?php
-namespace FPgrowth;
+namespace FPGrowth;
 
-class FPgrowth
+class FPGrowth
 {
     public function __construct()
     {
