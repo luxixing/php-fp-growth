@@ -1,4 +1,9 @@
 <?php
+/**
+ * A node in an FP tree
+ * @author xixing.lu@outlook.com
+ * @version 2016-03-16
+ */
 namespace FPGrowth\Base;
 
 class  FPNode
@@ -17,6 +22,16 @@ class  FPNode
         $this->_count = $count;
     }
 
+    public function isRoot()
+    {
+        return empty($this->_item) && empty($this->_count);
+    }
+
+    public function isLeaf()
+    {
+        return empty($this->_children);
+    }
+
     public function getTree()
     {
         return $this->_tree;
@@ -32,21 +47,26 @@ class  FPNode
         return $this->_count;
     }
 
+    public function setCount($n)
+    {
+        return $this->_count += $n;
+    }
+
     public function getParent()
     {
         return $this->_parent;
     }
 
-    public function setParent($value)
+    public function setParent($node)
     {
-        if ($value !== null && (!$value instanceof FPNode)) {
+        if ($node !== null && (!$node instanceof FPNode)) {
             throw new \Exception('A node must have an FPNode as a parent.');
         }
-        if ($value && $value->getTree() !== $this->_tree) {
+        if ($node && $node->getTree() !== $this->_tree) {
             throw new \Exception('Cannot have a parent from another tree.');
 
         }
-        $this->_parent = $value;
+        $this->_parent = $node;
     }
 
     public function getNeighbor()
@@ -54,17 +74,17 @@ class  FPNode
         return $this->_neighbor;
     }
 
-    public function setNeighbor($value)
+    public function setNeighbor($node)
     {
-        if ($value !== null && (!$value instanceof FPNode)) {
+        if ($node !== null && (!$node instanceof FPNode)) {
 
             throw new \Exception('A node must have an FPNode as a neighbor.');
         }
-        if ($value && $value->getTree() !== $this->_tree) {
+        if ($node && $node->getTree() !== $this->_tree) {
 
             throw new \Exception('Cannot have a neighbor from another tree.');
         }
-        $this->_neighbor = $value;
+        $this->_neighbor = $node;
     }
 
     public function getChildren()
@@ -72,19 +92,10 @@ class  FPNode
         return $this->_children;
     }
 
-    public function isRoot()
-    {
-        return empty($this->_item) && empty($this->_count);
-    }
-
-    public function isLeaf()
-    {
-        return empty($this->_children);
-    }
 
     public function isContain($item)
     {
-        return in_array($item, $this->_children);
+        return isset($this->_children[$item]);
     }
 
     public function add($child)
@@ -93,9 +104,9 @@ class  FPNode
             throw new \Exception('Can only add other FPNodes as children');
         }
         $item = $child->getItem();
-        if (!in_array($item, $this->_children)) {
+        if (!isset($this->_children[$item])) {
             $this->_children[$item] = $child;
-            $child->setParent($child);
+            $child->setParent($this);
         }
     }
 
@@ -106,7 +117,7 @@ class  FPNode
 
     public function increment()
     {
-        if ($this->_children === null) {
+        if ($this->_count === null) {
             throw new \Exception('Root nodes have no associated count.');
         }
         $this->_count++;
@@ -114,9 +125,9 @@ class  FPNode
 
     public function inspect($depth = 0)
     {
-        echo str_repeat(' ', $depth) . $this->repr();
+        echo str_repeat("  ", $depth) . $this->repr() . PHP_EOL;
         foreach ($this->_children as $v) {
-            $v->insect($depth + 1);
+            $v->inspect($depth + 1);
         }
     }
 
@@ -126,6 +137,6 @@ class  FPNode
             return sprintf("<%s (root)>", get_class($this));
         }
 
-        return sprintf("<%s %s (%s)>", get_class($this), $this->_item, $this->_count);
+        return sprintf("<%s %s (%s)>", ' ', $this->_item, $this->_count);
     }
 }
